@@ -1,0 +1,503 @@
+# Copyright (C) 2026 Rino de Boer
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Pencil by Rino 0.9.2\n"
+"Report-Msgid-Bugs-To: https://github.com/rinothecoder/pencil-by-rino/issues\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-30T14:34:03+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: pencil-by-rino\n"
+
+#. Plugin Name of the plugin
+#: pencil-by-rino.php
+#: includes/class-pencil-admin.php:44
+#: includes/class-pencil-admin.php:131
+msgid "Pencil by Rino"
+msgstr ""
+
+#. Description of the plugin
+#: pencil-by-rino.php
+msgid "Frontend content editing for AI-built WordPress themes. The theme owns the design, your client edits the words and images."
+msgstr ""
+
+#. Author of the plugin
+#: pencil-by-rino.php
+msgid "Rino de Boer"
+msgstr ""
+
+#: includes/class-pencil-admin.php:45
+msgid "Pencil"
+msgstr ""
+
+#: includes/class-pencil-admin.php:71
+#: includes/class-pencil-admin.php:141
+#: includes/class-pencil-plugin.php:157
+#: includes/class-pencil-plugin.php:181
+msgid "Open Pencil"
+msgstr ""
+
+#: includes/class-pencil-admin.php:116
+msgid "You do not have permission to view this page."
+msgstr ""
+
+#: includes/class-pencil-admin.php:120
+#: includes/class-pencil-admin.php:167
+msgid "History"
+msgstr ""
+
+#: includes/class-pencil-admin.php:121
+msgid "Get started"
+msgstr ""
+
+#: includes/class-pencil-admin.php:122
+#: includes/class-pencil-admin.php:329
+msgid "About"
+msgstr ""
+
+#: includes/class-pencil-admin.php:123
+#: includes/class-pencil-admin.php:374
+msgid "Release notes"
+msgstr ""
+
+#: includes/class-pencil-admin.php:166
+msgid "Changelog"
+msgstr ""
+
+#: includes/class-pencil-admin.php:173
+msgid "No changes yet"
+msgstr ""
+
+#: includes/class-pencil-admin.php:174
+msgid "Every change saved through Pencil appears here, with the value before and after."
+msgstr ""
+
+#: includes/class-pencil-admin.php:199
+msgid "We are going to build a custom WordPress theme that works with the Pencil by Rino plugin. Pencil has specific theme-building instructions that you must follow throughout the project. Find and read the complete instructions in WordPress admin under Pencil > Get Started > For AI Agents, or locate docs/agent-instructions.md inside the active Pencil plugin. If your environment cannot access them, ask me to copy them into this conversation."
+msgstr ""
+
+#: includes/class-pencil-admin.php:204
+msgid "Generate the website design and code inside the theme according to the prompt I provide. Build the first complete version and follow the Pencil instructions throughout the project."
+msgstr ""
+
+#: includes/class-pencil-admin.php:205
+#: includes/class-pencil-admin.php:214
+msgid "Website link: [Insert link]"
+msgstr ""
+
+#: includes/class-pencil-admin.php:206
+msgid "Website idea or design brief:"
+msgstr ""
+
+#: includes/class-pencil-admin.php:213
+msgid "I am providing an HTML template. Start with the complete template package I provide and convert it into a maintainable custom WordPress theme by following the Pencil instructions."
+msgstr ""
+
+#: includes/class-pencil-admin.php:215
+msgid "HTML template location or files:"
+msgstr ""
+
+#: includes/class-pencil-admin.php:223
+msgid "For you"
+msgstr ""
+
+#: includes/class-pencil-admin.php:224
+msgid "For AI agents"
+msgstr ""
+
+#: includes/class-pencil-admin.php:229
+msgid "Choose your starting point"
+msgstr ""
+
+#: includes/class-pencil-admin.php:230
+msgid "Build a custom theme with your AI coding tool"
+msgstr ""
+
+#: includes/class-pencil-admin.php:231
+msgid "Pencil provides the editable content layer and the rules your agent follows. Your coding tool builds the WordPress theme."
+msgstr ""
+
+#: includes/class-pencil-admin.php:234
+msgid "Compatible AI coding tools"
+msgstr ""
+
+#: includes/class-pencil-admin.php:235
+msgid "Works with"
+msgstr ""
+
+#: includes/class-pencil-admin.php:236
+msgid "Codex"
+msgstr ""
+
+#: includes/class-pencil-admin.php:237
+msgid "Claude"
+msgstr ""
+
+#: includes/class-pencil-admin.php:238
+msgid "Cursor"
+msgstr ""
+
+#: includes/class-pencil-admin.php:239
+msgid "Any other coding agents"
+msgstr ""
+
+#: includes/class-pencil-admin.php:245
+msgid "Path 1"
+msgstr ""
+
+#: includes/class-pencil-admin.php:246
+msgid "Start from an idea"
+msgstr ""
+
+#: includes/class-pencil-admin.php:247
+msgid "Describe the website and let your agent design and build the complete theme from scratch."
+msgstr ""
+
+#: includes/class-pencil-admin.php:248
+#: includes/class-pencil-admin.php:259
+msgid "Prompt copied"
+msgstr ""
+
+#: includes/class-pencil-admin.php:249
+msgid "Copy starter prompt"
+msgstr ""
+
+#: includes/class-pencil-admin.php:256
+msgid "Path 2"
+msgstr ""
+
+#: includes/class-pencil-admin.php:257
+msgid "Convert an HTML template"
+msgstr ""
+
+#: includes/class-pencil-admin.php:258
+msgid "Give your agent the complete HTML package and have it preserve the design while turning it into a proper WordPress theme."
+msgstr ""
+
+#: includes/class-pencil-admin.php:260
+msgid "Copy conversion prompt"
+msgstr ""
+
+#: includes/class-pencil-admin.php:266
+msgid "How to use it"
+msgstr ""
+
+#: includes/class-pencil-admin.php:269
+msgid "Connect your coding tool to WordPress"
+msgstr ""
+
+#: includes/class-pencil-admin.php:270
+msgid "Connect it to this website through MCP or another WordPress integration, or open your local WordPress installation as a project folder."
+msgstr ""
+
+#: includes/class-pencil-admin.php:273
+msgid "Use a starter prompt"
+msgstr ""
+
+#: includes/class-pencil-admin.php:274
+msgid "Copy the prompt for your starting point, then add the website link and your idea or HTML template location."
+msgstr ""
+
+#: includes/class-pencil-admin.php:277
+msgid "Let the agent build or convert the theme"
+msgstr ""
+
+#: includes/class-pencil-admin.php:278
+msgid "The agent builds the theme, creates the pages, imports editable images, and follows the Pencil instructions."
+msgstr ""
+
+#: includes/class-pencil-admin.php:281
+msgid "Review and refine the result"
+msgstr ""
+
+#: includes/class-pencil-admin.php:282
+msgid "Check every page, test text, buttons and images in Pencil, and ask your agent to fix anything that needs work."
+msgstr ""
+
+#: includes/class-pencil-admin.php:288
+msgid "Later design changes"
+msgstr ""
+
+#: includes/class-pencil-admin.php:289
+msgid "Return to your agent with the same instructions. Saved content remains intact as long as the field IDs and types stay the same."
+msgstr ""
+
+#: includes/class-pencil-admin.php:292
+msgid "Client access"
+msgstr ""
+
+#: includes/class-pencil-admin.php:293
+msgid "Administrators and Editors can use Pencil. The Editor role gives clients frontend editing without access to plugins, themes or settings."
+msgstr ""
+
+#: includes/class-pencil-admin.php:300
+msgid "The complete contract"
+msgstr ""
+
+#: includes/class-pencil-admin.php:301
+msgid "Instructions for the coding agent"
+msgstr ""
+
+#: includes/class-pencil-admin.php:302
+msgid "Copy these instructions into any coding agent, or let a connected agent read them through the WordPress files or MCP environment."
+msgstr ""
+
+#: includes/class-pencil-admin.php:305
+msgid "Copied"
+msgstr ""
+
+#: includes/class-pencil-admin.php:306
+msgid "Copy instructions"
+msgstr ""
+
+#: includes/class-pencil-admin.php:308
+msgid "Bundled with Pencil:"
+msgstr ""
+
+#: includes/class-pencil-admin.php:310
+msgid "Instructions for AI agents"
+msgstr ""
+
+#: includes/class-pencil-admin.php:330
+msgid "The story behind Pencil"
+msgstr ""
+
+#: includes/class-pencil-admin.php:375
+msgid "What is new in Pencil"
+msgstr ""
+
+#: includes/class-pencil-admin.php:379
+msgid "Got an idea, or feedback on something that could be better? I would like to hear it. The best ideas end up in the plugin, with your name next to them."
+msgstr ""
+
+#: includes/class-pencil-admin.php:381
+msgid "Share an idea or feedback"
+msgstr ""
+
+#: includes/class-pencil-admin.php:388
+#: includes/class-pencil-admin.php:400
+#: includes/class-pencil-admin.php:411
+msgid "September 2026"
+msgstr ""
+
+#: includes/class-pencil-admin.php:391
+msgid "Refined the History, About and Release notes screens so they share the same page structure."
+msgstr ""
+
+#: includes/class-pencil-admin.php:392
+msgid "Made the active frontend editing control easier to recognise."
+msgstr ""
+
+#: includes/class-pencil-admin.php:393
+msgid "Clarified the setup steps and added a website link field to both starter prompts."
+msgstr ""
+
+#: includes/class-pencil-admin.php:403
+msgid "Protected the frontend Media Library from common theme CSS class collisions."
+msgstr ""
+
+#: includes/class-pencil-admin.php:404
+msgid "Added clearer AI-agent rules and tests for WordPress interface compatibility."
+msgstr ""
+
+#: includes/class-pencil-admin.php:414
+msgid "First public release. Written to WordPress plugin standards and checked with the official Plugin Check."
+msgstr ""
+
+#: includes/class-pencil-admin.php:415
+msgid "Text, rich text, button and image fields, editable on the live page."
+msgstr ""
+
+#: includes/class-pencil-admin.php:416
+msgid "Managed regions for content owned by ACF, JetEngine, WooCommerce or WordPress, with a link to the right edit screen."
+msgstr ""
+
+#: includes/class-pencil-admin.php:417
+msgid "Per-page content for templates shared by several pages."
+msgstr ""
+
+#: includes/class-pencil-admin.php:418
+msgid "A Changes log with who, where, when, and the value before and after."
+msgstr ""
+
+#: includes/class-pencil-admin.php:419
+msgid "Instructions for AI agents, included in the plugin."
+msgstr ""
+
+#: includes/class-pencil-admin.php:437
+msgid "Found a bug?"
+msgstr ""
+
+#: includes/class-pencil-admin.php:438
+msgid "Pencil is a free plugin. There is no official support, but if you run into a bug I would like to know about it so I can fix it."
+msgstr ""
+
+#: includes/class-pencil-admin.php:439
+msgid "The best place to report a bug is the WordPress support forum. Describe what happened, which AI tool built the theme, and I will take a look when I can."
+msgstr ""
+
+#: includes/class-pencil-admin.php:441
+msgid "Go to support forum"
+msgstr ""
+
+#: includes/class-pencil-admin.php:457
+msgid "Unknown user"
+msgstr ""
+
+#: includes/class-pencil-admin.php:478
+msgid "a site-wide field"
+msgstr ""
+
+#. translators: 1: user name with avatar, 2: page or location, 3: date and time.
+#: includes/class-pencil-admin.php:494
+#, php-format
+msgid "%1$s updated %2$s on %3$s"
+msgstr ""
+
+#: includes/class-pencil-admin.php:503
+#: includes/template-functions.php:263
+msgid "Edit"
+msgstr ""
+
+#: includes/class-pencil-admin.php:508
+msgid "Before:"
+msgstr ""
+
+#: includes/class-pencil-admin.php:510
+msgid "After:"
+msgstr ""
+
+#: includes/class-pencil-admin.php:553
+msgid "No image"
+msgstr ""
+
+#. translators: %d: Media attachment ID.
+#: includes/class-pencil-admin.php:560
+#, php-format
+msgid "Media #%d"
+msgstr ""
+
+#: includes/class-pencil-admin.php:572
+#: includes/class-pencil-admin.php:578
+msgid "Empty"
+msgstr ""
+
+#: includes/class-pencil-fields.php:120
+#: includes/class-pencil-plugin.php:84
+msgid "This content field is no longer available."
+msgstr ""
+
+#: includes/class-pencil-fields.php:242
+msgid "A page-scoped Pencil field was rendered without a page. It is stored as a site-wide field instead."
+msgstr ""
+
+#: includes/class-pencil-fields.php:264
+msgid "Pencil field IDs may contain lowercase letters, numbers, dots, dashes, and underscores."
+msgstr ""
+
+#: includes/class-pencil-fields.php:332
+msgid "Choose an image from the Media Library."
+msgstr ""
+
+#: includes/class-pencil-fields.php:354
+msgid "Add the button text."
+msgstr ""
+
+#: includes/class-pencil-fields.php:362
+msgid "Add a valid link, such as https://example.com or /contact."
+msgstr ""
+
+#. translators: %d: Maximum number of characters.
+#: includes/class-pencil-fields.php:414
+#, php-format
+msgid "Keep this text to %d characters or fewer."
+msgstr ""
+
+#: includes/class-pencil-plugin.php:158
+msgid "Close Pencil"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:159
+msgid "Saved"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:160
+msgid "Something went wrong. Please try again."
+msgstr ""
+
+#: includes/class-pencil-plugin.php:161
+msgid "Choose image"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:162
+msgid "Use image"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:163
+msgid "Select the text you want to turn into a link first."
+msgstr ""
+
+#: includes/class-pencil-plugin.php:215
+msgid "Formatting"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:218
+msgid "Bold"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:219
+msgid "Italic"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:220
+#: includes/class-pencil-plugin.php:246
+msgid "Link"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:221
+msgid "Bulleted list"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:222
+msgid "Numbered list"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:234
+#: includes/class-pencil-plugin.php:247
+msgid "https://example.com or /contact"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:234
+msgid "Link address"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:236
+msgid "Apply"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:242
+msgid "Text"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:255
+msgid "Replace image"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:261
+msgid "Cancel"
+msgstr ""
+
+#: includes/class-pencil-plugin.php:264
+msgid "Save"
+msgstr ""
+
+#. translators: %s: content provider name.
+#: includes/template-functions.php:258
+#, php-format
+msgid "Editable in %s"
+msgstr ""
