@@ -47,6 +47,20 @@ Version 0.9.2 is a public prerelease for testing and feedback before a possible 
 
 [Share an idea or report a problem](https://rinodeboer.fillout.com/pencil-by-rino)
 
+## This contribution fork
+
+`Markus-web/pencil-by-rino-contrib` prepares narrowly scoped pull requests for
+the upstream project. Maintainer workflow, required checks, security handling,
+and the latest retained assessment are documented in [AGENTS.md](AGENTS.md),
+[CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and
+[docs/audit-2026-09-30.md](docs/audit-2026-09-30.md).
+
+Run the same source gate used by CI with:
+
+```bash
+./scripts/verify.sh
+```
+
 ## License
 
 GPL-2.0-or-later. See [LICENSE](LICENSE).
