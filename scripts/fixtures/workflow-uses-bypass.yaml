@@ -1,0 +1,13 @@
+# Semantic-parser regression fixture; this is not an executable workflow.
+jobs:
+  spaced:
+    steps:
+      - uses : owner/spaced@v1
+  quoted:
+    steps:
+      - "uses": owner/quoted@v2
+  flow:
+    steps:
+      - { uses: owner/flow@main }
+  reusable:
+    uses: owner/reusable/.github/workflows/check.yaml@main

@@ -56,5 +56,9 @@ if rg -n '^(<<<<<<<|=======|>>>>>>>)' --glob '!LICENSE' .; then
 	echo 'Merge conflict marker found.' >&2
 	exit 1
 fi
+
+echo '== workflow supply chain =='
+python3 scripts/check-workflow-pins.py --self-test .github/workflows
+
 git diff --check
 echo 'VERIFY_OK'

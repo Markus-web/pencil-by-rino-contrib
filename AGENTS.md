@@ -16,6 +16,8 @@ configuration, credentials, private branding, or deployment code.
 | `languages/` | Translation template and translations when present |
 | `docs/` | Public plugin and audit documentation |
 | `scripts/verify.sh` | Reusable local/CI quality gate |
+| `scripts/check-workflow-pins.py` | Semantic YAML gate for immutable Actions dependencies |
+| `scripts/fixtures/` | Tracked parser regressions used by the reusable gate |
 | `.github/workflows/quality.yml` | PHP-version matrix running the same gate |
 
 ## Remotes and branches
@@ -38,7 +40,9 @@ git status --short
 ```
 
 The gate checks PHP syntax, CSS structure, POT validity when `msgfmt` is
-available, plugin metadata, accidental private branding, and merge markers.
+available, plugin metadata, accidental private branding, merge markers, and
+immutable GitHub Action revisions. It requires Python 3 + PyYAML in addition
+to PHP; CI installs the distro package explicitly.
 For behavior changes, add focused WordPress regression tests when a test
 harness exists; until then, document exact manual reproduction and proof in
 the PR body.

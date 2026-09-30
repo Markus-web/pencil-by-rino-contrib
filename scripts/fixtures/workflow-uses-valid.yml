@@ -1,0 +1,7 @@
+# Valid-policy fixture; this is not an executable GitHub Actions workflow.
+jobs:
+  valid:
+    steps:
+      - uses: owner/pinned@0123456789abcdef0123456789abcdef01234567
+      - uses: ./.github/actions/local
+      - uses: docker://example/image@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef

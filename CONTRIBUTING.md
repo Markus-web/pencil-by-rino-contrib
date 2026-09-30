@@ -21,9 +21,12 @@ Avoid references to private customer infrastructure in source or examples.
 
 ## Required checks
 
-`./scripts/verify.sh` is the local and CI source of truth. It requires PHP and
-uses `msgfmt` when gettext is installed. GitHub Actions runs it on PHP 7.4 (the
-declared minimum), 8.2, and 8.4.
+`./scripts/verify.sh` is the local and CI source of truth. It requires PHP,
+Python 3 and PyYAML, and uses `msgfmt` when gettext is installed. GitHub Actions
+runs it on PHP 7.4 (the declared minimum), 8.2, and 8.4. Remote repository
+actions and reusable workflows must use exact 40-character commits; local
+actions are repository-owned, and Docker actions require SHA-256 image digests.
+Update the adjacent release comment when advancing a remote action.
 
 Changes to persistence, REST authorization, or activity history also need a
 regression scenario covering:
