@@ -384,6 +384,16 @@ final class Pencil_Admin {
 
 				<div class="pencil-changelog__release">
 					<div class="pencil-changelog__release-header">
+						<span class="pencil-changelog__version">v1.0.0</span>
+						<span class="pencil-changelog__date"><?php esc_html_e( 'September 2026', 'pencil-by-rino' ); ?></span>
+					</div>
+					<ul class="pencil-changelog__list">
+						<li><?php esc_html_e( 'First WordPress.org release of Pencil\'s frontend content editing workflow.', 'pencil-by-rino' ); ?></li>
+					</ul>
+				</div>
+
+				<div class="pencil-changelog__release">
+					<div class="pencil-changelog__release-header">
 						<span class="pencil-changelog__version">v0.9.2</span>
 						<span class="pencil-changelog__date"><?php esc_html_e( 'September 2026', 'pencil-by-rino' ); ?></span>
 					</div>
