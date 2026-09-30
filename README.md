@@ -23,7 +23,7 @@ Pencil does not automatically make an existing page-builder or block theme edita
 
 ## Installation
 
-1. Download the versioned `pencil-by-rino-*.zip` from the latest GitHub release.
+1. Download `pencil-by-rino.zip` from the latest GitHub release.
 2. In WordPress, open **Plugins → Add Plugin → Upload Plugin**.
 3. Upload the ZIP and activate **Pencil by Rino**.
 4. Open **Pencil → Get started**.
@@ -43,7 +43,7 @@ The theme remains responsible for its design and safe fallback output. Pencil ow
 
 ## Status
 
-Version 1.0.0 was submitted to the WordPress.org Plugin Directory for review on September 27, 2026. It is not yet published there.
+Version 0.9.2 is a public prerelease for testing and feedback before a possible WordPress.org 1.0 release.
 
 [Share an idea or report a problem](https://rinodeboer.fillout.com/pencil-by-rino)
 
