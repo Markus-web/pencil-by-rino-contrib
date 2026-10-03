@@ -4,7 +4,7 @@ Tags: frontend editing, ai, custom theme, content editing, client editing
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.9.2
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,9 @@ Administrators and Editors. Use the `pencil_can_edit` filter to change that.
 Yes. Each field has a stable ID, and a saved value always wins over the theme's default. When the AI redesigns a section later, the client's content stays.
 
 == Changelog ==
+
+= 1.0.0 =
+* First WordPress.org release of Pencil's existing frontend content editing workflow.
 
 = 0.9.2 =
 * Refined the History, About and Release notes screens so they share the same page structure.
