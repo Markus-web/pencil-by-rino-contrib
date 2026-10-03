@@ -63,7 +63,8 @@ Yes. Each field has a stable ID, and a saved value always wins over the theme's 
 == Changelog ==
 
 = 1.0.0 =
-* First WordPress.org release of Pencil's existing frontend content editing workflow.
+* First stable GitHub release of Pencil's frontend content editing workflow.
+* Check GitHub releases for plugin updates.
 
 = 0.9.2 =
 * Refined the History, About and Release notes screens so they share the same page structure.

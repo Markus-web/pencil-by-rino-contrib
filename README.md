@@ -41,9 +41,9 @@ The theme remains responsible for its design and safe fallback output. Pencil ow
 - `pencil_image()`
 - `pencil_managed_region_open()` and `pencil_managed_region_close()`
 
-## Status
+## Updates
 
-Version 1.0.0 was submitted to the WordPress.org Plugin Directory for review on September 27, 2026. It is not yet published there.
+Pencil checks the latest stable GitHub release for a newer version and shows normal WordPress plugin update notices. The release must include a versioned `pencil-by-rino-*.zip` asset. GitHub code commits and prereleases do not trigger update notices. A **Check for updates** link on Pencil's Plugins row clears the six-hour GitHub cache and requests a fresh check.
 
 [Share an idea or report a problem](https://rinodeboer.fillout.com/pencil-by-rino)
 

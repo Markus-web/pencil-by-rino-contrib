@@ -388,7 +388,8 @@ final class Pencil_Admin {
 						<span class="pencil-changelog__date"><?php esc_html_e( 'September 2026', 'pencil-by-rino' ); ?></span>
 					</div>
 					<ul class="pencil-changelog__list">
-						<li><?php esc_html_e( 'First WordPress.org release of Pencil\'s frontend content editing workflow.', 'pencil-by-rino' ); ?></li>
+						<li><?php esc_html_e( 'First stable GitHub release of Pencil\'s frontend content editing workflow.', 'pencil-by-rino' ); ?></li>
+						<li><?php esc_html_e( 'Pencil checks GitHub releases for plugin updates.', 'pencil-by-rino' ); ?></li>
 					</ul>
 				</div>
 
@@ -446,9 +447,9 @@ final class Pencil_Admin {
 			<div class="pencil-card">
 				<h2><?php esc_html_e( 'Found a bug?', 'pencil-by-rino' ); ?></h2>
 				<p><?php esc_html_e( 'Pencil is a free plugin. There is no official support, but if you run into a bug I would like to know about it so I can fix it.', 'pencil-by-rino' ); ?></p>
-				<p><?php esc_html_e( 'The best place to report a bug is the WordPress support forum. Describe what happened, which AI tool built the theme, and I will take a look when I can.', 'pencil-by-rino' ); ?></p>
+				<p><?php esc_html_e( 'The best place to report a bug is GitHub Issues. Describe what happened, which AI tool built the theme, and I will take a look when I can.', 'pencil-by-rino' ); ?></p>
 				<a href="<?php echo esc_url( PENCIL_SUPPORT_URL ); ?>" target="_blank" rel="noopener noreferrer" class="pencil-button">
-					<?php esc_html_e( 'Go to support forum', 'pencil-by-rino' ); ?>
+					<?php esc_html_e( 'Report a bug on GitHub', 'pencil-by-rino' ); ?>
 				</a>
 			</div>
 		</div>
