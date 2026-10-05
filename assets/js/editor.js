@@ -31,13 +31,28 @@
 	const save = document.querySelector( '[data-pencil-save]' );
 
 	if (
-		( ! fields.length && ! managedRegions.length ) ||
+
 		! window.pencilEditor ||
 		! toolbar || ! toggle || ! highlight || ! highlightLabel || ! managedEdit || ! popup || ! form ||
 		! textEditor || ! richtextEditor || ! richtextInput || ! linkRow || ! buttonEditor || ! imageEditor
 	) {
 		return;
 	}
+
+	const modeButtons = Array.from( popup.querySelectorAll( '[data-pencil-mode]' ) );
+	const commentEditor = popup.querySelector( '[data-pencil-comment-editor]' );
+	const commentInput = popup.querySelector( '[data-pencil-comment-input]' );
+	const managedEditor = popup.querySelector( '[data-pencil-managed-editor]' );
+	const popupManagedLink = popup.querySelector( '[data-pencil-popup-managed-link]' );
+	const commentDetail = popup.querySelector( '[data-pencil-comment-detail]' );
+	let popupMode = 'edit';
+	let commentTarget = null;
+	let popupAnchor = null;
+	let comments = [];
+	const markerLayer = document.createElement( 'div' );
+	markerLayer.className = 'pencil-ui pencil-markers';
+	markerLayer.hidden = true;
+	document.body.append( markerLayer );
 
 	const editors = {
 		text: textEditor,
@@ -53,12 +68,18 @@
 	let lastRange = null;
 	let linkRange = null;
 	const labels = {
-		openPencil: 'Open Pencil',
-		closePencil: 'Close Pencil',
+		openPencil: 'Open Pencilino',
+		closePencil: 'Close Pencilino',
 		saved: 'Saved',
 		error: 'Something went wrong. Please try again.',
 		chooseImage: 'Choose image',
 		useImage: 'Use image',
+		postComment: 'Post comment',
+		commentSaved: 'Comment posted',
+		writeComment: 'Write a comment first.',
+		saveChanges: 'Save changes',
+		section: 'Page section',
+		locationMissing: 'The original element has changed. This comment is still saved with its page context.',
 		selectText: 'Select the text you want to turn into a link first.',
 		...( window.pencilEditor.labels || {} ),
 	};
@@ -91,9 +112,9 @@
 		return `https://${ url }`;
 	};
 
-	const showSaved = () => {
+	const showSaved = ( message = labels.saved ) => {
 		window.clearTimeout( statusTimer );
-		status.textContent = labels.saved;
+		status.textContent = message;
 		status.hidden = false;
 		statusTimer = window.setTimeout( () => {
 			status.hidden = true;
@@ -113,13 +134,13 @@
 
 		const rect = target.getBoundingClientRect();
 		const isManaged = target.hasAttribute( 'data-pencil-managed' );
-		const editUrl = isManaged ? target.dataset.pencilManagedEditUrl : '';
+		const editUrl = isManaged ? clientEditUrl( target.dataset.pencilManagedEditUrl || '' ) : '';
 
 		highlight.style.left = `${ Math.max( 0, rect.left - 5 ) }px`;
 		highlight.style.top = `${ Math.max( 0, rect.top - 5 ) }px`;
 		highlight.style.width = `${ rect.width + 10 }px`;
 		highlight.style.height = `${ rect.height + 10 }px`;
-		highlightLabel.textContent = isManaged ? target.dataset.pencilManagedLabel : target.dataset.pencilLabel;
+		highlightLabel.textContent = targetLabel( target );
 		managedEdit.hidden = ! editUrl;
 		managedEdit.href = editUrl || '#';
 		managedEdit.textContent = editUrl ? target.dataset.pencilManagedActionLabel : '';
@@ -134,20 +155,27 @@
 		const gap = 12;
 		const edge = 16;
 		const popupRect = popup.getBoundingClientRect();
+		// Keep the popup beside the clicked point, including within large containers.
+		const anchorX = popupAnchor ? rect.left + rect.width * popupAnchor.x : rect.left;
+		const anchorY = popupAnchor ? rect.top + rect.height * popupAnchor.y : rect.bottom;
 		const left = Math.min(
-			Math.max( rect.left, edge ),
-			window.innerWidth - popupRect.width - edge
+			Math.max( anchorX, edge ),
+			Math.max( edge, window.innerWidth - popupRect.width - edge )
 		);
-		let top = rect.bottom + gap;
+		let top = anchorY + gap;
 
 		if ( top + popupRect.height > window.innerHeight - edge ) {
-			top = Math.max( edge, rect.top - popupRect.height - gap );
+			top = Math.max( edge, ( popupAnchor ? anchorY : rect.top ) - popupRect.height - gap );
 		}
 
 		popup.style.right = 'auto';
 		popup.style.bottom = 'auto';
 		popup.style.left = `${ left }px`;
 		popup.style.top = `${ top }px`;
+		const finalRect = popup.getBoundingClientRect();
+		if ( finalRect.bottom > window.innerHeight - edge ) {
+			popup.style.top = `${ Math.max( edge, window.innerHeight - finalRect.height - edge ) }px`;
+		}
 	};
 
 	const resizeInput = () => {
@@ -290,7 +318,7 @@
 	};
 
 	/**
-	 * Turn browser editing markup into the tags Pencil stores. The server sanitizes again.
+	 * Turn browser editing markup into the tags Pencilino stores. The server sanitizes again.
 	 */
 	const cleanRichtext = ( html ) => {
 		// An inert document, so nothing in the markup loads or runs.
@@ -317,7 +345,13 @@
 	const closePopup = () => {
 		popup.hidden = true;
 		popup.classList.remove( 'pencil-popup--wide' );
+		const focusTarget = selectedField;
 		selectedField = null;
+		commentTarget = null;
+		popupAnchor = null;
+		popupMode = 'edit';
+		commentInput.value = '';
+		if ( focusTarget && focusTarget.hasAttribute( 'data-pencil-field' ) ) { focusTarget.focus( { preventScroll: true } ); }
 		toggle.disabled = false;
 		error.hidden = true;
 		error.textContent = '';
@@ -332,7 +366,17 @@
 		const type = fieldType( field );
 
 		selectedField = field;
-		popupLabel.textContent = field.dataset.pencilLabel;
+		popupLabel.textContent = targetLabel( field );
+		modeButtons.forEach( button => { button.hidden = button.dataset.pencilMode === 'edit' && ! field.matches( '[data-pencil-field], [data-pencil-managed]' ); } );
+		commentInput.value = '';
+		if ( ! commentTarget ) { commentTarget = anchorTarget( field ); }
+		popupMode = 'edit';
+		managedEditor.hidden = true;
+		commentEditor.hidden = true;
+		commentDetail.hidden = true;
+		save.hidden = false;
+		save.textContent = labels.saveChanges;
+		modeButtons.forEach( button => button.setAttribute( 'aria-selected', String( button.dataset.pencilMode === 'edit' ) ) );
 		Object.keys( editors ).forEach( ( key ) => {
 			editors[ key ].hidden = key !== type;
 		} );
@@ -343,6 +387,10 @@
 		popup.hidden = false;
 		toggle.disabled = true;
 		setHighlight( field );
+		if ( ! field.hasAttribute( 'data-pencil-field' ) ) {
+			setPopupMode( field.hasAttribute( 'data-pencil-managed' ) ? 'edit' : 'comment' );
+			return;
+		}
 
 		if ( 'image' === type ) {
 			pendingAttachmentId = Number.parseInt( field.dataset.pencilAttachmentId, 10 ) || 0;
@@ -398,6 +446,8 @@
 			field.tabIndex = active ? 0 : -1;
 		} );
 
+		markerLayer.hidden = ! active;
+		renderMarkers();
 		if ( ! active ) {
 			closePopup();
 			highlight.hidden = true;
@@ -466,7 +516,11 @@
 	};
 
 	const saveField = async () => {
-		if ( ! selectedField || save.disabled ) {
+		if ( popupMode === 'comment' ) {
+			await saveComment();
+			return;
+		}
+		if ( popupMode !== 'edit' || ! selectedField?.hasAttribute( 'data-pencil-field' ) || save.disabled ) {
 			return;
 		}
 
@@ -474,6 +528,7 @@
 
 		save.disabled = true;
 		cancel.disabled = true;
+		modeButtons.forEach( button => { button.disabled = true; } );
 		error.hidden = true;
 
 		try {
@@ -518,8 +573,158 @@
 		} finally {
 			save.disabled = false;
 			cancel.disabled = false;
+			modeButtons.forEach( button => { button.disabled = false; } );
 		}
 	};
+
+	const clientEditUrl = ( value ) => {
+		if ( ! value ) { return ''; }
+		try {
+			const url = new URL( value, window.location.href );
+			if ( url.origin !== window.location.origin || ! [ 'http:', 'https:' ].includes( url.protocol ) ) { return ''; }
+			if ( window.pencilEditor.clientMode ) { url.searchParams.set( 'pencil_return', window.location.href.split( '#' )[ 0 ] ); }
+			return url.href;
+		} catch ( e ) { return ''; }
+	};
+
+	const selectableTarget = ( element ) => {
+		if ( ! ( element instanceof Element ) || element.closest( '.pencil-ui, #wpadminbar, .media-modal, .media-modal-backdrop, script, style, iframe' ) ) { return null; }
+		return element.closest( '[data-pencil-field]' ) || element.closest( '[data-pencil-managed]' ) || element;
+	};
+
+	const targetLabel = ( element ) => {
+		if ( ! element ) { return labels.section; }
+		return element.dataset.pencilLabel || element.dataset.pencilManagedLabel || element.getAttribute( 'aria-label' ) || ( element.matches( 'section, article, main, header, footer, div' ) ? ( element.querySelector( 'h1,h2,h3' )?.textContent.trim().slice( 0, 80 ) || labels.section ) : element.textContent.trim().slice( 0, 80 ) || element.tagName.toLowerCase() );
+	};
+
+	const selectorFor = ( element ) => {
+		const parts = [];
+		let node = element;
+		while ( node && node !== document.body ) {
+			if ( node.id && document.querySelectorAll( `#${ CSS.escape( node.id ) }` ).length === 1 ) { parts.unshift( `#${ CSS.escape( node.id ) }` ); break; }
+			const tag = node.tagName.toLowerCase();
+			const classes = Array.from( node.classList ).filter( value => ! /^(pencil-|is-|has-|active|hover)/.test( value ) ).slice( 0, 3 );
+			const siblings = node.parentElement ? Array.from( node.parentElement.children ).filter( child => child.tagName === node.tagName ) : [];
+			parts.unshift( tag + classes.map( value => `.${ CSS.escape( value ) }` ).join( '' ) + ( siblings.length > 1 ? `:nth-of-type(${ siblings.indexOf( node ) + 1 })` : '' ) );
+			node = node.parentElement;
+		}
+		return ( parts.length ? parts.join( ' > ' ) : 'body' ).slice( 0, 2000 );
+	};
+
+	const anchorTarget = ( element, x, y ) => {
+		const rect = element.getBoundingClientRect();
+		return { selector: selectorFor( element ), field: element.dataset.pencilField || '', id: element.id || '', tag: element.tagName.toLowerCase(), label: targetLabel( element ), text: element.matches( 'section, article, main, header, footer, div, body' ) ? '' : element.textContent.trim().slice( 0, 240 ), x: typeof x === 'number' && rect.width ? Math.max( 0, Math.min( 1, ( x - rect.left ) / rect.width ) ) : 0.5, y: typeof y === 'number' && rect.height ? Math.max( 0, Math.min( 1, ( y - rect.top ) / rect.height ) ) : 0.5 };
+	};
+
+	const resolveTarget = ( target ) => {
+		if ( target.field ) { const field = fields.find( element => element.dataset.pencilField === target.field ); if ( field ) { return field; } }
+		if ( target.id ) { const element = document.getElementById( target.id ); if ( element && ! element.closest( '.pencil-ui' ) ) { return element; } }
+		try {
+			const element = target.selector ? document.querySelector( target.selector ) : null;
+			if ( element && ! element.closest( '.pencil-ui' ) && ( ! target.text || element.textContent.trim().slice( 0, 240 ) === target.text ) ) { return element; }
+		} catch ( e ) { /* A stale selector remains available in the inbox. */ }
+		if ( target.text && /^[a-z][a-z0-9-]*$/.test( target.tag ) ) {
+			const matches = Array.from( document.querySelectorAll( target.tag ) ).filter( element => ! element.closest( '.pencil-ui' ) && element.textContent.trim().slice( 0, 240 ) === target.text );
+			if ( matches.length === 1 ) { return matches[ 0 ]; }
+		}
+		return null;
+	};
+
+	const setPopupMode = ( mode ) => {
+		popupMode = mode;
+		error.hidden = true;
+		modeButtons.forEach( button => button.setAttribute( 'aria-selected', String( button.dataset.pencilMode === mode ) ) );
+		Object.values( editors ).forEach( editor => { editor.hidden = true; } );
+		commentEditor.hidden = mode !== 'comment';
+		managedEditor.hidden = true;
+		commentDetail.hidden = true;
+		save.hidden = false;
+		save.textContent = mode === 'comment' ? labels.postComment : labels.saveChanges;
+		popup.classList.toggle( 'pencil-popup--wide', mode === 'edit' && selectedField?.dataset.pencilType === 'richtext' );
+		if ( mode === 'comment' ) { commentInput.focus(); }
+		else if ( selectedField?.hasAttribute( 'data-pencil-field' ) ) { const type = fieldType( selectedField ); editors[ type ].hidden = false;
+			if ( type === 'richtext' ) { focusEditor(); } else if ( type === 'image' ) { replaceImage.focus(); } else if ( type === 'button' ) { buttonText.focus(); } else { input.focus(); } }
+		else {
+			managedEditor.hidden = false;
+			popup.querySelector( '[data-pencil-managed-description]' ).textContent = selectedField?.dataset.pencilManagedLabel || '';
+			const url = clientEditUrl( selectedField?.dataset.pencilManagedEditUrl || '' );
+			popupManagedLink.hidden = ! url;
+			popupManagedLink.href = url || '#';
+			popupManagedLink.textContent = selectedField?.dataset.pencilManagedActionLabel || 'Edit';
+			save.hidden = true;
+			if ( url ) { popupManagedLink.focus(); }
+		}
+		if ( selectedField ) { positionPopup( selectedField ); }
+	};
+	modeButtons.forEach( button => button.addEventListener( 'click', () => setPopupMode( button.dataset.pencilMode ) ) );
+
+	const commentRequest = async ( url, options = {} ) => {
+		const response = await window.fetch( url, { credentials: 'same-origin', cache: 'no-store', ...options, headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': window.pencilEditor.nonce, ...( options.headers || {} ) } } );
+		let data;
+		try { data = await response.json(); } catch ( e ) { throw new Error( labels.error ); }
+		if ( ! response.ok ) { throw new Error( data.message || labels.error ); }
+		return data;
+	};
+
+	const saveComment = async () => {
+		if ( save.disabled || ! commentTarget ) { return; }
+		const text = commentInput.value.trim();
+		if ( ! text ) { showError( labels.writeComment ); commentInput.focus(); return; }
+		save.disabled = true; cancel.disabled = true;
+		modeButtons.forEach( button => { button.disabled = true; } );
+		try {
+			const comment = await commentRequest( window.pencilEditor.commentsUrl, { method: 'POST', body: JSON.stringify( { page_url: window.location.href, page_id: Number( window.pencilEditor.pageId ) || 0, page_title: document.title.slice( 0, 191 ), target: commentTarget, comment: text } ) } );
+			comments.push( comment ); closePopup(); renderMarkers(); showSaved( labels.commentSaved );
+		} catch ( e ) { showError( e.message ); }
+		finally { save.disabled = false; cancel.disabled = false; modeButtons.forEach( button => { button.disabled = false; } ); }
+	};
+
+	const openComment = ( comment ) => {
+		const target = resolveTarget( comment.target );
+		if ( target ) { target.scrollIntoView( { block: 'center', behavior: 'instant' } ); }
+		selectedField = target || document.body;
+		popupAnchor = target ? comment.target : null;
+		popupMode = 'detail';
+		popupLabel.textContent = comment.target.label;
+		Object.values( editors ).forEach( editor => { editor.hidden = true; } );
+		commentEditor.hidden = true; managedEditor.hidden = true; commentDetail.hidden = false;
+		popup.querySelector( '[data-pencil-comment-author]' ).textContent = `${ comment.author } · ${ comment.resolved ? 'Resolved' : 'Open' }`;
+		popup.querySelector( '[data-pencil-comment-body]' ).textContent = comment.comment;
+		modeButtons.forEach( button => { button.hidden = true; } );
+		save.hidden = true; error.hidden = Boolean( target );
+		error.textContent = target ? '' : labels.locationMissing;
+		popup.hidden = false; toggle.disabled = true;
+		if ( target ) { setHighlight( target ); }
+		positionPopup( selectedField ); cancel.focus();
+	};
+
+	const renderMarkers = () => {
+		markerLayer.replaceChildren();
+		if ( ! active ) { return; }
+		comments.filter( comment => ! comment.resolved ).forEach( comment => {
+			const target = resolveTarget( comment.target ); if ( ! target ) { return; }
+			const rect = target.getBoundingClientRect();
+			if ( ! rect.width || ! rect.height ) { return; }
+			const x = rect.left + rect.width * comment.target.x; const y = rect.top + rect.height * comment.target.y;
+			if ( y < 0 || y > window.innerHeight || x < 0 || x > window.innerWidth ) { return; }
+			const marker = document.createElement( 'button' ); marker.type = 'button'; marker.className = 'pencil-comment-marker'; marker.textContent = String( comment.id ); marker.setAttribute( 'aria-label', `${ comment.target.label }: ${ comment.comment.slice( 0, 80 ) }` ); marker.style.left = `${ x }px`; marker.style.top = `${ y }px`;
+			marker.addEventListener( 'click', () => { if ( ! save.disabled ) { closePopup(); openComment( comment ); } } );markerLayer.append( marker );
+		} );
+	};
+
+	const loadComments = async () => {
+		if ( ! window.pencilEditor.commentsUrl ) { return; }
+		try {
+			const url = new URL( window.pencilEditor.commentsUrl ); url.searchParams.set( 'page_url', window.location.href );
+			comments = await commentRequest( url.href ); renderMarkers();
+			const id = Number( new URLSearchParams( window.location.search ).get( 'pencil-comment' ) );
+			if ( id ) {
+				const comment = comments.find( item => item.id === id ) || await commentRequest( `${ window.pencilEditor.commentsUrl }/${ id }` );
+				if ( comment ) { setActive( true ); openComment( comment ); }
+			}
+		} catch ( e ) { showSaved( e.message ); }
+	};
+	loadComments();
 
 	/*
 	 * Events.
@@ -534,7 +739,7 @@
 	} );
 
 	document.addEventListener( 'pointerover', ( event ) => {
-		const field = event.target.closest( '[data-pencil-field], [data-pencil-managed]' );
+		const field = selectableTarget( event.target );
 
 		if ( active && ! selectedField && field ) {
 			setHighlight( field );
@@ -542,7 +747,7 @@
 	} );
 
 	document.addEventListener( 'pointerout', ( event ) => {
-		const field = event.target.closest( '[data-pencil-field], [data-pencil-managed]' );
+		const field = selectableTarget( event.target );
 
 		if (
 			active &&
@@ -558,27 +763,14 @@
 	document.addEventListener(
 		'click',
 		( event ) => {
-			const field = event.target.closest( '[data-pencil-field]' );
-			const managedRegion = event.target.closest( '[data-pencil-managed]' );
-
-			if ( ! active || selectedField ) {
-				return;
-			}
-
-			if ( managedRegion && ! field ) {
-				event.preventDefault();
-				event.stopPropagation();
-				setHighlight( managedRegion );
-				return;
-			}
-
-			if ( ! field ) {
-				return;
-			}
-
-			// Also stops button and rich text links from navigating while editing.
+			if ( ! active || selectedField ) { return; }
+			const field = selectableTarget( event.target );
+			if ( ! field ) { return; }
 			event.preventDefault();
 			event.stopPropagation();
+			commentTarget = anchorTarget( field, event.clientX, event.clientY );
+			// Keyboard-generated clicks use the element-based positioning fallback.
+			popupAnchor = event.detail > 0 ? commentTarget : null;
 			openPopup( field );
 		},
 		true
@@ -701,7 +893,7 @@
 				const modalContainer = document.querySelector( '.media-modal .media-frame' );
 
 				if ( modalContainer && modalContainer.getBoundingClientRect().height <= 0 ) {
-					console.warn( 'Pencil: the media modal is collapsed, probably because theme CSS targets a WordPress UI class such as .media-frame.' );
+					console.warn( 'Pencilino: the media modal is collapsed, probably because theme CSS targets a WordPress UI class such as .media-frame.' );
 				}
 			} );
 		} );
@@ -734,14 +926,14 @@
 	input.addEventListener( 'input', resizeInput );
 
 	input.addEventListener( 'keydown', ( event ) => {
-		if ( 'Enter' === event.key && ! event.isComposing && 'text' === selectedField?.dataset.pencilType ) {
+		if ( popupMode === 'edit' && 'Enter' === event.key && ! event.isComposing && 'text' === selectedField?.dataset.pencilType ) {
 			event.preventDefault();
 			saveField();
 		}
 	} );
 
 	document.addEventListener( 'keydown', ( event ) => {
-		if ( 'Escape' !== event.key ) {
+		if ( 'Escape' !== event.key || save.disabled ) {
 			return;
 		}
 
@@ -757,6 +949,7 @@
 	} );
 
 	window.addEventListener( 'resize', () => {
+		renderMarkers();
 		if ( selectedField ) {
 			setHighlight( selectedField );
 			positionPopup( selectedField );
@@ -766,6 +959,7 @@
 	window.addEventListener(
 		'scroll',
 		( event ) => {
+			renderMarkers();
 			// Scrolling inside the popup's editor must not move the popup.
 			if ( popup.contains( event.target ) ) {
 				return;

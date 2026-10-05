@@ -1,5 +1,5 @@
 /**
- * Pencil by Rino - admin page tabs and copy buttons.
+ * Pencilino by Rino - admin page tabs and copy buttons.
  */
 ( function () {
 	'use strict';

@@ -1,8 +1,8 @@
 <?php
 /**
- * Theme-facing Pencil helpers.
+ * Theme-facing Pencilino helpers.
  *
- * @package Pencil
+ * @package Pencilino
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -91,7 +91,7 @@ function pencil_internal_image_style( $args ) {
 
 if ( ! function_exists( 'pencil_text' ) ) {
 	/**
-	 * Render a Pencil-owned single-line text field.
+	 * Render a Pencilino-owned single-line text field.
 	 *
 	 * @param string $id   Stable field ID.
 	 * @param array  $args Field settings: label, default, max_length, scope.
@@ -113,7 +113,7 @@ if ( ! function_exists( 'pencil_text' ) ) {
 
 if ( ! function_exists( 'pencil_richtext' ) ) {
 	/**
-	 * Render a Pencil-owned rich text field with bold, italic, links, and lists.
+	 * Render a Pencilino-owned rich text field with bold, italic, links, and lists.
 	 *
 	 * Always rendered inside `<div class="pencil-richtext">` so layout is the same
 	 * for visitors and editors.
@@ -142,7 +142,7 @@ if ( ! function_exists( 'pencil_richtext' ) ) {
 
 if ( ! function_exists( 'pencil_button' ) ) {
 	/**
-	 * Render a Pencil-owned link button with editable text and URL.
+	 * Render a Pencilino-owned link button with editable text and URL.
 	 *
 	 * `before` and `after` hold theme-controlled markup inside the link, such as
 	 * a decorative icon. The editable text is then wrapped in
@@ -255,12 +255,12 @@ if ( ! function_exists( 'pencil_managed_region_open' ) ) {
 			? sanitize_text_field( $args['label'] )
 			: sprintf(
 				/* translators: %s: content provider name. */
-				__( 'Editable in %s', 'pencil-by-rino' ),
+				__( 'Editable in %s', 'pencilino-by-rino' ),
 				$name
 			);
 		$action_label = isset( $args['action_label'] ) && $args['action_label']
 			? sanitize_text_field( $args['action_label'] )
-			: __( 'Edit', 'pencil-by-rino' );
+			: __( 'Edit', 'pencilino-by-rino' );
 		$classes  = array( 'pencil-managed-region' );
 
 		if ( ! empty( $args['class'] ) ) {

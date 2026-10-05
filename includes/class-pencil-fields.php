@@ -1,8 +1,8 @@
 <?php
 /**
- * Pencil field registration and value storage.
+ * Pencilino field registration and value storage.
  *
- * @package Pencil
+ * @package Pencilino
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -117,7 +117,7 @@ final class Pencil_Fields {
 		if ( ! $schema || ! in_array( $schema['type'], self::TYPES, true ) ) {
 			return new WP_Error(
 				'pencil_unknown_field',
-				__( 'This content field is no longer available.', 'pencil-by-rino' ),
+				__( 'This content field is no longer available.', 'pencilino-by-rino' ),
 				array( 'status' => 404 )
 			);
 		}
@@ -141,7 +141,7 @@ final class Pencil_Fields {
 	}
 
 	/**
-	 * Sanitize rich text to the restricted Pencil formatting set.
+	 * Sanitize rich text to the restricted Pencilino formatting set.
 	 *
 	 * @param mixed $value Raw HTML or plain text.
 	 * @return string
@@ -239,7 +239,7 @@ final class Pencil_Fields {
 		if ( ! $post_id ) {
 			_doing_it_wrong(
 				__METHOD__,
-				esc_html__( 'A page-scoped Pencil field was rendered without a page. It is stored as a site-wide field instead.', 'pencil-by-rino' ),
+				esc_html__( 'A page-scoped Pencilino field was rendered without a page. It is stored as a site-wide field instead.', 'pencilino-by-rino' ),
 				esc_html( PENCIL_VERSION )
 			);
 
@@ -261,7 +261,7 @@ final class Pencil_Fields {
 		if ( ! preg_match( '/^[a-z0-9][a-z0-9._-]*$/', $id ) ) {
 			_doing_it_wrong(
 				__METHOD__,
-				esc_html__( 'Pencil field IDs may contain lowercase letters, numbers, dots, dashes, and underscores.', 'pencil-by-rino' ),
+				esc_html__( 'Pencilino field IDs may contain lowercase letters, numbers, dots, dashes, and underscores.', 'pencilino-by-rino' ),
 				esc_html( PENCIL_VERSION )
 			);
 
@@ -329,7 +329,7 @@ final class Pencil_Fields {
 				if ( ! $attachment_id || 'attachment' !== get_post_type( $attachment_id ) || ! wp_attachment_is_image( $attachment_id ) ) {
 					return new WP_Error(
 						'pencil_invalid_image',
-						__( 'Choose an image from the Media Library.', 'pencil-by-rino' ),
+						__( 'Choose an image from the Media Library.', 'pencilino-by-rino' ),
 						array( 'status' => 400 )
 					);
 				}
@@ -351,7 +351,7 @@ final class Pencil_Fields {
 				if ( '' === $text ) {
 					return new WP_Error(
 						'pencil_button_text_required',
-						__( 'Add the button text.', 'pencil-by-rino' ),
+						__( 'Add the button text.', 'pencilino-by-rino' ),
 						array( 'status' => 400 )
 					);
 				}
@@ -359,7 +359,7 @@ final class Pencil_Fields {
 				if ( '' === $url ) {
 					return new WP_Error(
 						'pencil_button_url_required',
-						__( 'Add a valid link, such as https://example.com or /contact.', 'pencil-by-rino' ),
+						__( 'Add a valid link, such as https://example.com or /contact.', 'pencilino-by-rino' ),
 						array( 'status' => 400 )
 					);
 				}
@@ -411,7 +411,7 @@ final class Pencil_Fields {
 			'pencil_value_too_long',
 			sprintf(
 				/* translators: %d: Maximum number of characters. */
-				__( 'Keep this text to %d characters or fewer.', 'pencil-by-rino' ),
+				__( 'Keep this text to %d characters or fewer.', 'pencilino-by-rino' ),
 				absint( $max_length )
 			),
 			array( 'status' => 400 )
@@ -444,7 +444,7 @@ final class Pencil_Fields {
 	}
 
 	/**
-	 * Return all saved Pencil values.
+	 * Return all saved Pencilino values.
 	 *
 	 * @return array<string, mixed>
 	 */

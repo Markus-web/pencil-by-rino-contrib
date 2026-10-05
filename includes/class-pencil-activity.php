@@ -2,7 +2,7 @@
 /**
  * Lightweight activity records for frontend content changes.
  *
- * @package Pencil
+ * @package Pencilino
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -133,7 +133,7 @@ final class Pencil_Activity {
 
 		$limit = min( 200, max( 1, absint( $limit ) ) );
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom activity-log table has no core WP API; results are only read on the low-traffic Pencil admin screen.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom activity-log table has no core WP API; results are only read on the low-traffic Pencilino admin screen.
 		return $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT * FROM %i ORDER BY created_at DESC, activity_id DESC LIMIT %d',
