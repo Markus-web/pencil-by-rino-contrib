@@ -149,7 +149,7 @@ final class Pencil_Fields {
 		if ( strlen( maybe_serialize( $values ) ) > self::VALUES_MAX_BYTES ) {
 			return new WP_Error(
 				'pencil_storage_full',
-				__( 'There is no room for more content. Shorten some texts and try again.', 'pencil-by-rino' ),
+				__( 'There is no room for more content. Shorten some texts and try again.', 'pencilino-by-rino' ),
 				array( 'status' => 413 )
 			);
 		}
